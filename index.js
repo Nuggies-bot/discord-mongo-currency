@@ -18,16 +18,14 @@ class DiscordCurrency {
 
     /**
      * @param {String} userId - Discord user ID
-     * @param {String} guildId - Discord guild ID 
      */
     
-    async findUser(userId, guildId) {
+    async findUser(userId) {
         if (!userId) throw new Error('No user ID was provided');
-        if (!guildId) throw new Error('No guild ID was provided');
         
-        let user = this.cache.get(`${userId}_${guildId}`);
+        let user = this.cache.get(`${userId}`);
         if (!user) {
-            let e = await currencyModel.findOne({ userId: userId, guildId: guildId });
+            let e = await currencyModel.findOne({ userId: userId });
             if (!e) {
                 e = await currencyModel.create({
                     userId: userId,
@@ -38,7 +36,7 @@ class DiscordCurrency {
             }
             
             user = e;
-            this.cache.set(`${userId}_${guildId}`, user);
+            this.cache.set(`${userId}`, user);
         }
         
         return user;
@@ -86,7 +84,7 @@ class DiscordCurrency {
      * @param {string} amount - Amount of coins to deduct.
      */
 
-    static async deductCoins(userId, guildId, amount) {
+    static async deductCoins(userId, amount) {
         if (!userId) throw new TypeError("You didn't provide a user ID.");
         if (!amount) throw new TypeError("You didn't provide an amount of coins.");
         if (isNaN(amount)) throw new TypeError("The amount must be a number.");

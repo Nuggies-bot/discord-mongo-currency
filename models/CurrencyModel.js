@@ -8,6 +8,9 @@ const CurrencySchema = new mongoose.Schema({
 	inventory: [
 		{ type: Object, default: {} },
 	],
+	factoryLevel: { type: Number, default: 1 },
+	userLevel: { type: Number, default: 0 },
+	userXp: { type: Number, default: 0 },
 	badges: { type: Array, default: [] },
 	netValue: { type: Number, default: null },
 });
